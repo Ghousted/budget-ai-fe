@@ -1,56 +1,94 @@
-# Welcome to your Expo app 👋
+# Budget AI — Mobile App (Frontend)
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Budget AI is a budget tracker with an AI companion ("Budget Bot" / _Peso_) you can
+ask questions like _"Can I afford this?"_ and get answers grounded in your budget,
+goals, and income. This repository is the **React Native frontend**. The backend
+(API + AI/SLM) lives in a separate repository (`budget-ai-api`).
 
-## Get started
+> **Status: design phase.** All screens are built to match the Figma design and
+> run on realistic **mock data** (`src/lib/mock.ts`). No backend calls yet — that
+> comes next.
 
-1. Install dependencies
+## Stack
 
-   ```bash
-   npm install
-   ```
+- **Expo** SDK 57 (React Native 0.86, React 19)
+- **Expo Router** — file-based navigation (typed routes)
+- **NativeWind v4** — Tailwind CSS for React Native
+- **TypeScript** (strict)
+- **react-native-svg** — donut / ring progress
+- **expo-linear-gradient** — balance & hero gradients
+- **@expo/vector-icons** (MaterialCommunityIcons)
 
-2. Start the app
-
-   ```bash
-   npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+## Getting started
 
 ```bash
-npm run reset-project
+npm install
+npx expo start        # then press i (iOS), a (Android), or w (web)
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+Type-check and bundle sanity check:
 
-### Other setup steps
+```bash
+npx tsc --noEmit
+npx expo export --platform ios   # verifies the whole app bundles
+```
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
+## Project structure
 
-## Learn more
+```
+src/
+  app/                        # Expo Router routes (screens)
+    _layout.tsx               # root stack + providers + modal registration
+    index.tsx                 # entry → redirects to sign-in
+    (auth)/                   # sign-in, sign-up, forgot-password, verify-email,
+                              #   create-password, reset-success, terms
+    (tabs)/                   # Home, Budget, Log, Goals, AI (custom tab bar)
+    category-form.tsx         # add / edit budget category  (bottom sheet)
+    goal-form.tsx             # add / edit savings goal      (bottom sheet)
+    add-funds.tsx             # add funds to a goal          (bottom sheet)
+    delete-goal.tsx           # remove-goal confirmation      (dialog)
+    settings.tsx              # settings + currency/language pickers
+    notifications.tsx         # notifications panel           (top sheet)
+  components/
+    ui/                       # Button, TextField, Card, Screen, ProgressBar,
+                              #   DonutRing, SegmentedControl, ModalSheet
+    BottomTabBar.tsx          # 5-tab bar with elevated center "Log" action
+    CategoryBadge, LogRow, SectionHeader, Logo, IconPicker, ColorPicker
+  theme/
+    tokens.ts                 # colors, gradients, radii, category palette (JS)
+    categories.ts             # canonical spend categories (label/color/icon)
+  lib/
+    format.ts                 # ₱ currency + percent helpers
+    mock.ts                   # design-phase mock data
+    cn.ts                     # className joiner
+  global.css                  # Tailwind entry
+tailwind.config.js            # design tokens (keep in sync with theme/tokens.ts)
+```
 
-To learn more about developing your project with Expo, look at the following resources:
+## Design system
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+- **Brand:** royal blue `#2563EB` (buttons, links, active tab); deep royal
+  `#0A37C4` (`royal`) for section titles; navy gradient for the balance card.
+- **Money:** income green `#22C55E`, expense red `#EF4444`.
+- **Categories:** an 8-color palette (`cat.*`) driving category rings/bars/icons.
+- **Currency:** Philippine Peso (₱).
 
-## Join the community
+Tokens are defined twice on purpose: as Tailwind classes (`tailwind.config.js`)
+for markup, and as JS values (`src/theme/tokens.ts`) for SVG strokes, gradient
+stops and icon colors. Keep them in sync.
 
-Join our community of developers creating universal apps.
+## Screens implemented
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+Auth (sign in/up, forgot-password, verify email, create/reset password, T&Cs) ·
+Home dashboard · Log entry (manual / receipt-scan / voice + income) · Budget
+(categories with ring progress, add/edit category) · Goals (savings summary, goal
+rings, add/edit/fund/delete) · AI Chat (Budget Bot) · Settings · Notifications.
+
+**Not yet built:** intro onboarding slides, the setup feature carousel, and the
+animated splash (pending exact design copy).
+
+## Notes
+
+- The brand mark in `src/components/Logo.tsx` is a placeholder for the
+  robot-in-wallet mascot — swap in the exported asset when available.
+- `AGENTS.md` reminds contributors to check the versioned Expo 57 docs.
