@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { Text, View } from 'react-native';
 import { Link, router } from 'expo-router';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import { Button } from '@/components/ui/Button';
 import { Screen } from '@/components/ui/Screen';
 import { TextField } from '@/components/ui/TextField';
 import { Logo } from '@/components/Logo';
+import { GoogleIcon } from '@/components/GoogleIcon';
 import { ApiError } from '@/lib/api';
 import { useAuth } from '@/lib/auth';
 
@@ -58,8 +58,8 @@ export default function SignIn() {
           onChangeText={setPassword}
         />
 
-        <Link href="/(auth)/forgot-password" className="self-end text-sm font-semibold text-brand">
-          Forgot Password?
+        <Link href="/(auth)/forgot-password" asChild>
+          <Text className="self-end text-sm font-semibold text-brand">Forgot Password?</Text>
         </Link>
 
         {error ? <Text className="text-center text-[13px] font-medium text-expense">{error}</Text> : null}
@@ -76,13 +76,13 @@ export default function SignIn() {
           label="Continue With Google"
           variant="secondary"
           onPress={() => router.replace('/(tabs)')}
-          leading={<MaterialCommunityIcons name="google" size={18} color="#4285F4" />}
+          leading={<GoogleIcon size={18} />}
         />
 
         <View className="flex-row justify-center pt-2">
           <Text className="text-sm text-ink-muted">New to Budget AI? </Text>
-          <Link href="/(auth)/sign-up" className="text-sm font-semibold text-brand">
-            Create Account
+          <Link href="/(auth)/sign-up" asChild>
+            <Text className="text-sm font-semibold text-brand">Create Account</Text>
           </Link>
         </View>
       </View>
