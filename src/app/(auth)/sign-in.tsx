@@ -7,10 +7,33 @@ import { Button } from '@/components/ui/Button';
 import { Screen } from '@/components/ui/Screen';
 import { TextField } from '@/components/ui/TextField';
 import { Logo } from '@/components/Logo';
+import { ApiError } from '@/lib/api';
+import { useAuth } from '@/lib/auth';
 
 export default function SignIn() {
+  const { signIn } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleSignIn = async () => {
+    if (loading) return;
+    setLoading(true);
+    setError(null);
+    try {
+      await signIn(email.trim(), password);
+      router.replace('/(tabs)');
+    } catch (err) {
+      setError(
+        err instanceof ApiError && err.status === 0
+          ? "Can't reach the server. Is the API running?"
+          : 'Sign in failed. Please check your details and try again.',
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <Screen scroll contentClassName="pb-10">
@@ -39,7 +62,9 @@ export default function SignIn() {
           Forgot Password?
         </Link>
 
-        <Button label="Sign In" onPress={() => router.replace('/(tabs)')} />
+        {error ? <Text className="text-center text-[13px] font-medium text-expense">{error}</Text> : null}
+
+        <Button label="Sign In" onPress={handleSignIn} loading={loading} />
 
         <View className="flex-row items-center gap-3 py-1">
           <View className="h-px flex-1 bg-hairline" />
