@@ -1,4 +1,5 @@
 import '@/global.css';
+import '@/lib/nativewind-interop';
 
 import type { ReactNode } from 'react';
 import { Platform, View } from 'react-native';
