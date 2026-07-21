@@ -82,8 +82,8 @@ export default function VerifyEmail() {
 
           <View className="mt-4 flex-row justify-center">
             <Text className="text-sm text-ink-muted">Already have an account? </Text>
-            <Link href="/(auth)/sign-in" className="text-sm font-semibold text-brand">
-              Sign In
+            <Link href="/(auth)/sign-in" asChild>
+              <Text className="text-sm font-semibold text-brand">Sign In</Text>
             </Link>
           </View>
         </View>
