@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { Text, View } from 'react-native';
 import { Link, router } from 'expo-router';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import { Button } from '@/components/ui/Button';
 import { Screen } from '@/components/ui/Screen';
 import { TextField } from '@/components/ui/TextField';
 import { Logo } from '@/components/Logo';
+import { GoogleIcon } from '@/components/GoogleIcon';
 
 export default function SignIn() {
   const [email, setEmail] = useState('');
@@ -51,7 +51,7 @@ export default function SignIn() {
           label="Continue With Google"
           variant="secondary"
           onPress={() => router.replace('/(tabs)')}
-          leading={<MaterialCommunityIcons name="google" size={18} color="#4285F4" />}
+          leading={<GoogleIcon size={18} />}
         />
 
         <View className="flex-row justify-center pt-2">
