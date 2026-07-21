@@ -35,8 +35,8 @@ export default function SignIn() {
           onChangeText={setPassword}
         />
 
-        <Link href="/(auth)/forgot-password" className="self-end text-sm font-semibold text-brand">
-          Forgot Password?
+        <Link href="/(auth)/forgot-password" asChild>
+          <Text className="self-end text-sm font-semibold text-brand">Forgot Password?</Text>
         </Link>
 
         <Button label="Sign In" onPress={() => router.replace('/(tabs)')} />
@@ -56,8 +56,8 @@ export default function SignIn() {
 
         <View className="flex-row justify-center pt-2">
           <Text className="text-sm text-ink-muted">New to Budget AI? </Text>
-          <Link href="/(auth)/sign-up" className="text-sm font-semibold text-brand">
-            Create Account
+          <Link href="/(auth)/sign-up" asChild>
+            <Text className="text-sm font-semibold text-brand">Create Account</Text>
           </Link>
         </View>
       </View>
